@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyugdíjas SZÉP-kártya kalkulátor</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; }
+input, button { font-size: 1rem; padding: 8px; }
+.result { margin-top: 20px; padding: 12px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<h2>Nyugdíjas SZÉP-kártya kalkulátor</h2>
+
+<p>Adja meg a havi nyugdíj összegét (Ft):</p>
+<input type="number" id="pension" min="0" step="1">
+<button onclick="calc()">Számítás</button>
+
+<div class="result" id="out"></div>
+
+<script>
+function calc() {
+    const p = Number(document.getElementById('pension').value);
+    if (!p || p <= 0) {
+        document.getElementById('out').innerHTML = "Adjon meg pozitív nyugdíjösszeget!";
+        return;
+    }
+
+    let annualCard = 0;
+    if (p <= 250000) {
+        annualCard = 200000;
+    } else if (p <= 500000) {
+        annualCard = 100000;
+    } else {
+        annualCard = 0;
+    }
+
+    const monthlyEquivalent = annualCard / 12.0;
+    const percentEffect = (monthlyEquivalent / p) * 100;
+
+    document.getElementById('out').innerHTML =
+        "<b>Éves SZÉP-kártya:</b> " + annualCard.toLocaleString('hu-HU') + " Ft<br>" +
+        "<b>Havi megfelelője:</b> " + monthlyEquivalent.toLocaleString('hu-HU', {maximumFractionDigits: 0}) + " Ft/hó<br>" +
+        "<b>Nyugdíjnövelő hatás:</b> " + percentEffect.toFixed(2) + " %";
+}
+</script>
+</body>
+</html>
